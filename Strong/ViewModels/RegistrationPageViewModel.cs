@@ -37,8 +37,8 @@ namespace Strong.ViewModels
 
         private async void LoadRoles()
         {
-            var roles = await _database.GetRoles();
-            Roles = new ObservableCollection<RoleTable>(roles);
+            var rolelist = await _database.GetRoles();
+            Roles = new ObservableCollection<RoleTable>(rolelist);
         }
 
         [RelayCommand]
@@ -64,9 +64,10 @@ namespace Strong.ViewModels
             }
             else { check = true; }
 
-            if (FirstPassword == SecondPassword)
+            if (FirstPassword != SecondPassword)
             {
                 await Application.Current.MainPage.DisplayAlertAsync("ошибка", "пароли не сходятся", "ОК");
+                return;
             }
             else { check = true; }
 

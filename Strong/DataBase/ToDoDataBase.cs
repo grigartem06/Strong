@@ -17,9 +17,6 @@ namespace Strong.DataBase
         {
             string dbPath = Path.Combine(FileSystem.AppDataDirectory, "StrongDB.db");
 
-            if (File.Exists(dbPath))
-            { File.Delete(dbPath); }
-
                 //созд файла бд
                 _connection = new SQLiteAsyncConnection(dbPath);
 
@@ -50,12 +47,16 @@ namespace Strong.DataBase
 
         private async void Roles()
         {
-            var trener = new RoleTable {role_name ="тренер" };
-            await AddRoles(trener);
+            var count = _connection.Table<RoleTable>().CountAsync().Result;
 
-            var student = new RoleTable { role_name = "ученик" };
-            await AddRoles(trener);
-            
+            if (count == 0)
+            {
+                var trainer = new RoleTable { role_name = "тренер" };
+                var student = new RoleTable { role_name = "ученик" };
+
+                await AddRoles(trainer);
+                await AddRoles(student);
+            }
         }
 
         public Task<List<RoleTable> > GetRoles ()
