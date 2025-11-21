@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Strong.MainPage">
+
+    <ScrollView>
+        <StackLayout Orientation="Vertical" Padding="10">
+            <Label Text="Регистрация" Margin="5" HorizontalTextAlignment="Center"/>
+            <Entry Text="{Binding UserName, Mode=OneWay}"  Placeholder="введите имя" Margin="5"/>
+            <Entry Text="{Binding FirstPassword}" IsPassword="True" Placeholder="введите пароль"/>
+            <Entry Text="{Binding FirstPassword}" IsPassword="True" Placeholder="повторите пароль"/>
+
+            <Picker ItemsSource="{Binding Roles}"  ItemDisplayBinding="{Binding Role_name}"/>
+
+            <Button Text="зарегистроваться" Command="{Binding RegistrationCommand}" Margin="5"/>
+            <Label Text="есть аккаунт?" HorizontalOptions="Center"  FontSize="Small"/>
+            <Button Text="войти"  BackgroundColor="DarkGray" Command="{Binding InputCommand}"/>
+
+
+        </StackLayout>
+    </ScrollView>
+
+</ContentPage>
