@@ -12,6 +12,9 @@ namespace Strong
             Routing.RegisterRoute("//Pages/InputPage", typeof(InputPage));
             Routing.RegisterRoute("//RegistrationPage", typeof(MainPage));
             Routing.RegisterRoute("//Pages/TrenersPages/TrenersMainPage", typeof(TrenersMainPage));
+            Routing.RegisterRoute("//Pages/TrenersPages/AddStudentToListPage", typeof(AddStudentToListPage));
+
+            
         }
     
     }

@@ -21,7 +21,7 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <Button  Text="добавить ученика" Margin="5" Command="{Binding }"/>
+            <Button  Text="добавить ученика" Margin="5" Command="{Binding AddStudentToListCommand }"/>
             
 
         </StackLayout>

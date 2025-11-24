@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Strong.DataBase;
 using Strong.Models;
+using Strong.Pages.TrenersPages;
 using System.Collections.ObjectModel;
 
 
@@ -28,6 +29,14 @@ namespace Strong.ViewModels
             {
                 Trainer = (TrainerTable)trainerObj;
             }
+        }
+
+        [RelayCommand]
+        public async Task AddStudentToList() 
+        {
+            await Shell.Current.GoToAsync("//Pages/TrenersPages/AddStudentToListPage", new Dictionary<string, object> { ["Trainer"] = trainer });
+
+            
         }
 
     }

@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using Strong.Pages.TrenersPages;
+using Strong.ViewModels;
 
 namespace Strong
 {
@@ -14,6 +16,13 @@ namespace Strong
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+
+            builder.Services.AddSingleton<TrenersMainPage>();
+            builder.Services.AddSingleton<TrenersMainPageViewModel>();
+
+            builder.Services.AddSingleton<AddStudentToListPage>();
+            builder.Services.AddSingleton<AddStudentToListViewModel>();
+
 
 #if DEBUG
     		builder.Logging.AddDebug();

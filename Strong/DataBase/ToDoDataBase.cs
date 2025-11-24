@@ -17,10 +17,8 @@ namespace Strong.DataBase
         {
             string dbPath = Path.Combine(FileSystem.AppDataDirectory, "StrongDB.db");
 
-            
                 //созд файла бд
                 _connection = new SQLiteAsyncConnection(dbPath);
-
                 //создание таблиц
                 _connection.CreateTableAsync<RoleTable>().Wait();
                 _connection.CreateTableAsync<UserTable>().Wait();
@@ -31,11 +29,8 @@ namespace Strong.DataBase
                 _connection.CreateTableAsync<ExerciseTable>().Wait();
                 _connection.CreateTableAsync<TrainingTable>().Wait();
                 _connection.CreateTableAsync<SetsTable>().Wait();
-
-            //заполнение внутренних полей   
-
-            Roles();
-
+                //заполнение внутренних полей   
+                Roles();
         }
 
         public  Task<int> AddRoles(RoleTable role)
@@ -49,7 +44,6 @@ namespace Strong.DataBase
         private async void Roles()
         {
             var count = _connection.Table<RoleTable>().CountAsync().Result;
-
             if (count == 0)
             {
                 var trainer = new RoleTable { role_name = "тренер" };
@@ -119,6 +113,16 @@ namespace Strong.DataBase
         {
             return await _connection.Table<StudentTable>()
                 .FirstOrDefaultAsync(s => s.user_id == userId);
+        }
+
+        public async Task<List<StudentTable>> GetStudentWithoutTraeiners()
+        {
+            //return await _connection.Table<StudentTable>()
+            //    .FirstOrDefaultAsync(s=>s.trainer_id == null);
+
+            return await _connection.Table<StudentTable>()
+            .Where(s => s.trainer_id == null)
+            .ToListAsync();
         }
 
     }

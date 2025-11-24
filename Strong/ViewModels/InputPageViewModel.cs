@@ -16,6 +16,9 @@ namespace Strong.ViewModels
         [ObservableProperty]
         private string password;
 
+        [ObservableProperty]
+        private bool switchInf;
+
         [RelayCommand]
         private async Task Input()
         {
@@ -36,20 +39,12 @@ namespace Strong.ViewModels
 
             if (user != null)
             {
-                //if (user.role_id == 2) { await Application.Current.MainPage.DisplayAlertAsync("Успех", $"Вход выполнен. ID: {user.user_id} ученик = {user.role_id}", "ОК"); }
-                //else if (user.role_id == 1)
-                //{
-                //    await Application.Current.MainPage.DisplayAlertAsync("Успех", $"Вход выполнен. ID: {user.user_id} тренер ={user.role_id} ", "ОК");
-                //    await Shell.Current.GoToAsync("//Pages/TrenersPages/TrenersMainPage");
-                //}
-
-
                 if (user.role_id == 1) // тренер
                 {
                     var trainer = await database.GetTrainerByUserId(user.user_id);
                     if (trainer != null)
                     {
-                        await Shell.Current.GoToAsync("//TrainerPage", new Dictionary<string, object>
+                        await Shell.Current.GoToAsync("//Pages/TrenersPages/TrenersMainPage", new Dictionary<string, object>
                         {
                             ["Trainer"] = trainer
                         });

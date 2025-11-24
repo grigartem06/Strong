@@ -51,39 +51,11 @@ namespace Strong.ViewModels
         {
             bool check = false;
        
-
-
-
-
             if (string.IsNullOrEmpty(UserName)) { await Application.Current.MainPage.DisplayAlertAsync("ошибка", "введите имя пользователя", "ОК"); }
             else if (string.IsNullOrEmpty(FirstPassword)) { await Application.Current.MainPage.DisplayAlertAsync("ошибка", "введите пароль", "ОК"); }
             else if (string.IsNullOrEmpty(SecondPassword)) { await Application.Current.MainPage.DisplayAlertAsync("ошибка", "повторите пароль", "ОК"); }
             else if (FirstPassword != SecondPassword) { await Application.Current.MainPage.DisplayAlertAsync("ошибка", "пароли не сходятся", "ОК"); }
             else { check = true; }
-
-
-
-
-            //if (check)
-            //{
-            //    var newUser = new UserTable
-            //    {
-            //        user_name = UserName, // исправлено: UserName, а не userName
-            //        user_password = FirstPassword, // исправлено: FirstPassword
-            //        role_id = SelectedRole.role_id
-            //    };
-
-            //    if (newUser.role_id == 1) //тренер
-            //    {
-            //        var newTrainer = new TrainerTable { };
-            //    }
-            //    else if (newUser.role_id == 2)//ученик 
-            //    {
-                    
-            //    }
-
-            //    await NewUser(newUser);
-            //}
 
             if(!check) return; //блок при неправильных полях
 
@@ -119,21 +91,14 @@ namespace Strong.ViewModels
                 {
                     user_id = (int)userId,
                     student_weight = 0.0, 
-                    student_height = 0.0
+                    student_height = 0.0,
+                    trainer_id = null
+
                 };
                 await _database.AddStudent(student);
             }
 
             await Application.Current.MainPage.DisplayAlertAsync("Успех", "Регистрация успешна!", "ОК");
-
-
-
-
-
-
-
-
-
 
         }
 

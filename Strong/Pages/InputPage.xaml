@@ -9,6 +9,11 @@
         <Entry Text="{Binding UserName}"  HorizontalTextAlignment="Center" Placeholder="Введите имя"/>
         <Entry Text="{Binding Password}"  HorizontalTextAlignment="Center" Placeholder="Введите пароль" IsPassword="True"/>
 
+        <StackLayout Orientation="Horizontal">
+        <Switch  IsToggled="{Binding SwitchInf}"/>
+            <Label Text="Запомнить меня"/>
+        </StackLayout>
+        
         <Button Text="войти"  Command="{Binding InputCommand}" Margin="5" />
 
         <Label Text="нет аккаунта" FontSize="Small" Margin="5" HorizontalTextAlignment="Center"/>
