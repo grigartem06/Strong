@@ -39,6 +39,7 @@ namespace Strong.ViewModels
 
         public AddStudentToListViewModel()
         {
+             //_database = new ToDoDataBase();
             LoadStudents();
         }
 
