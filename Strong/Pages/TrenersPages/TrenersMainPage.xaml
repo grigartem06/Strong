@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Strong.Pages.TrenersPages.TrenersMainPage"
+             Title="TrenersMainPage">
+
+    <ScrollView Orientation="Vertical">
+        
+        <StackLayout Orientation="Vertical" Padding="10">
+
+            <Label Text="ваши ученики:"  HorizontalTextAlignment="Center" FontSize="Header"/>
+
+            <CollectionView ItemsSource="{Binding StudentsList}" SelectionMode="Single">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Orientation="Horizontal" Padding="5">
+                            <Label Text="{Binding student_id}" FontSize="18" VerticalOptions="Center" />
+                            <Label Text="{Binding student_weight}" FontSize="18" VerticalOptions="Center"  Margin="5"/>
+                            <Label Text="{Binding student_height}" FontSize="18" VerticalOptions="Center"  Margin="5"/>
+                            <Button Text="подробнее" Command="{Binding }"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button  Text="добавить ученика" Margin="5" Command="{Binding AddStudentToListCommand }"/>
+            
+
+        </StackLayout>
+        
+    </ScrollView>
+</ContentPage>
