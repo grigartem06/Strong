@@ -18,7 +18,8 @@ namespace Strong
 
             Routing.RegisterRoute("//Pages/StudentsPages/StudentMainPage", typeof(StudentMainPage));
             Routing.RegisterRoute("//Pages/StudentsPages/ExercisePage", typeof(ExercisePage));
-  
+
+            Routing.RegisterRoute("//Pages/StudentsPages/MeasurementsPage", typeof(MeasurementsPage));
 
 
         }

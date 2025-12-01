@@ -7,7 +7,7 @@
     <StackLayout Orientation="Vertical" Padding="10">
         <Label Text="{Binding Test}"/>
 
-        <Button  Text="замеры" Command="{Binding}" Margin="5"/> 
+        <Button  Text="замеры" Command="{Binding GoToMeasurementsPageCommand}" Margin="5"/> 
         <Button  Text="упражнения" Command="{Binding GoToExercisePageCommand}" Margin="5"/> 
         <Button  Text="новая тренировка" Command="{Binding}" Margin="5"/> 
         <Button  Text="шаблоны" Command="{Binding}" Margin="5"/> 

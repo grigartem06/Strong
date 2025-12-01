@@ -1,4 +1,5 @@
 ﻿
+
 using SQLite;
 using Strong.Models;
 using System;
@@ -30,6 +31,8 @@ namespace Strong.DataBase
                 _connection.CreateTableAsync<ExerciseTable>().Wait();
                 _connection.CreateTableAsync<TrainingTable>().Wait();
                 _connection.CreateTableAsync<SetsTable>().Wait();
+                _connection.CreateTableAsync<MeasurementsTable>().Wait();
+
             //заполнение внутренних полей   
                 MuscleGroup();
                 Roles();
@@ -216,5 +219,21 @@ namespace Strong.DataBase
         }
 
         
+        public async Task SaveMeasurement(string name, double value, int st)
+        {
+            var meansure = new MeasurementsTable { measurements_name = name, measurements_value = value , student_id =st, measurements_date = DateTime.Now};
+            await _connection.InsertAsync(meansure);
+        }
+
+        public async Task<List<MeasurementsTable>> GetMeasurements(string name, int id)
+        {
+            if (name != null)
+                return await _connection.Table<MeasurementsTable>().Where(s => s.student_id == id && s.measurements_name == name).ToListAsync();
+            else
+                return await _connection.Table<MeasurementsTable>().Where(s => s.student_id == id).ToListAsync();
+        }
+
+
+
     }
 }

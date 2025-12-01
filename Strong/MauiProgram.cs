@@ -29,6 +29,11 @@ namespace Strong
 
             builder.Services.AddSingleton<ExercisePage>();
             builder.Services.AddSingleton<ExercisePageViewModel>();
+            
+            builder.Services.AddSingleton<MeasurementsPage>();
+            builder.Services.AddSingleton<MeasurementsViewModel>();
+
+            
 
 
 #if DEBUG
