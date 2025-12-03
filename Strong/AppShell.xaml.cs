@@ -20,6 +20,7 @@ namespace Strong
             Routing.RegisterRoute("//Pages/StudentsPages/ExercisePage", typeof(ExercisePage));
 
             Routing.RegisterRoute("//Pages/StudentsPages/MeasurementsPage", typeof(MeasurementsPage));
+            Routing.RegisterRoute("//Pages/StudentsPages/NewTrainingPage", typeof(NewTrainingPage));
 
 
         }

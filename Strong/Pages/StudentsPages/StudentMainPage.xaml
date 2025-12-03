@@ -8,8 +8,8 @@
         <Label Text="{Binding Test}"/>
 
         <Button  Text="замеры" Command="{Binding GoToMeasurementsPageCommand}" Margin="5"/> 
-        <Button  Text="упражнения" Command="{Binding GoToExercisePageCommand}" Margin="5"/> 
-        <Button  Text="новая тренировка" Command="{Binding}" Margin="5"/> 
+        <Button  Text="упражнения" Command="{Binding GoToExercisePageCommand}" Margin="5"/>
+        <Button  Text="новая тренировка" Command="{Binding GoToNewTrainingPageCommand}" Margin="5"/> 
         <Button  Text="шаблоны" Command="{Binding}" Margin="5"/> 
         <Button  Text="история" Command="{Binding}" Margin="5"/>
 

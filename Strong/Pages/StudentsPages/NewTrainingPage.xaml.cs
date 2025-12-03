@@ -8,4 +8,5 @@ public partial class NewTrainingPage : ContentPage
 	{
 		InitializeComponent();BindingContext = VM;
 	}
+
 }

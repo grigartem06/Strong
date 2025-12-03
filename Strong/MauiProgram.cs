@@ -33,6 +33,9 @@ namespace Strong
             builder.Services.AddSingleton<MeasurementsPage>();
             builder.Services.AddSingleton<MeasurementsViewModel>();
 
+            builder.Services.AddSingleton<NewTrainingPage>();
+            builder.Services.AddSingleton<NewTrainingViewModel>();
+
             
 
 

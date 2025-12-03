@@ -8,40 +8,32 @@
     <ScrollView>
         <StackLayout Orientation="Vertical">
 
-            <StackLayout Orientation="Horizontal">
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
                 <Label Text="название тренировки" />
                 <Entry Text="{Binding TrainingName}" />
             </StackLayout>
 
-            <CollectionView ItemsSource="{Binding WorkoutGroups}"
-                IsGrouped="True"
-                HorizontalOptions="FillAndExpand">
-
-                <!-- Заголовок группы (упражнение) -->
-                <CollectionView.GroupHeaderTemplate>
-                    <DataTemplate>
-                        <Label Text="{Binding ExerciseName}"
-                               FontSize="18"
-                               FontAttributes="Bold"
-                               Padding="10,5" />
-                    </DataTemplate>
-                </CollectionView.GroupHeaderTemplate>
-            
-                <!-- Шаблон элемента (подход) -->
+            <CollectionView ItemsSource="{Binding ExerciseSections}" SelectionMode="Single">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <StackLayout Orientation="Horizontal" Padding="15,5">
-                            <Label Text="{Binding Order}" WidthRequest="40" />
-                            <Label Text="{Binding Weight}" WidthRequest="60" />
-                            <Label Text="кг" WidthRequest="30" />
-                            <Label Text="{Binding Reps}" WidthRequest="60" />
-                            <Label Text="повт." />
-                        </StackLayout>
+
+                        <VerticalStackLayout>
+                            <Label Text="{Binding exercise_id}" Margin="5"/>
+                            <Label Text="{Binding exercise_weight}" Margin="5"/>
+                            <Label Text="{Binding exercise_reps}" Margin="5"/>
+                            <Label Text="{Binding rest_time}" Margin="5"/>
+                        </VerticalStackLayout>
+
+                           
+
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
+                
             </CollectionView>
 
-
+            <Button Text="добавить упражнение" Command="{Binding AddExerciseToTrainingCommand}" Margin="5"/>
+            <Button Text="сохранить" Command="SaveTrainingCommand"/>
+            <Button Text="отменить" Command="CancelTrainingCommand"/>
 
         </StackLayout>
     </ScrollView>

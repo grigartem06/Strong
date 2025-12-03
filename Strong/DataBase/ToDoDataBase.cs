@@ -233,6 +233,26 @@ namespace Strong.DataBase
                 return await _connection.Table<MeasurementsTable>().Where(s => s.student_id == id).ToListAsync();
         }
 
+        public async Task AddTraining(TrainingTable training) => await _connection.InsertAsync(training);
+        
+        
+        
+        public async Task<TrainingTable> GetNowTraining(TrainingTable training)
+        {
+            //return  await _connection.Table<TrainingTable>().Where(t => t.training_name == training.training_name 
+            //    && t.training_start == training.training_start 
+            //    && t.student_id == training.student_id).ToListAsync();
+
+            return await _connection.Table<TrainingTable>().FirstOrDefaultAsync(t => t.training_name == training.training_name && t.IsPattern == training.IsPattern && t.training_start == training.training_start && t.student_id == training.student_id);
+            
+        }
+
+
+        public async Task AddSets(SetsTable sets) => await _connection.InsertAsync(sets);
+
+        public async Task<List<SetsTable>> GetSetsByStudentId(int trId) => await _connection.Table<SetsTable>().Where(s=> s.training_id == trId).ToListAsync();
+
+
 
 
     }
