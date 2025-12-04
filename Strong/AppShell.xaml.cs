@@ -1,6 +1,7 @@
 ﻿using Strong.Pages;
 using Strong.Pages.StudentsPages;
 using Strong.Pages.TrenersPages;
+using Strong.ViewModels;
 
 namespace Strong
 {
@@ -21,6 +22,9 @@ namespace Strong
 
             Routing.RegisterRoute("//Pages/StudentsPages/MeasurementsPage", typeof(MeasurementsPage));
             Routing.RegisterRoute("//Pages/StudentsPages/NewTrainingPage", typeof(NewTrainingPage));
+
+            Routing.RegisterRoute("//Pages/StudentsPages/AllTrainingsPage", typeof(AllTrainingsPage));
+            Routing.RegisterRoute("//Pages/StudentsPages/AboutTrainingPage", typeof(AboutTrainingPage));
 
 
         }

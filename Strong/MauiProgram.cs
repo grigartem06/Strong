@@ -37,6 +37,13 @@ namespace Strong
             builder.Services.AddSingleton<NewTrainingViewModel>();
 
             
+            builder.Services.AddSingleton<AllTrainingsPage>();
+            builder.Services.AddSingleton<AllTrainingsPageViewModel>();
+
+
+            builder.Services.AddSingleton<AboutTrainingPage>();
+            builder.Services.AddSingleton<AboutTrainingPageViewModel>();
+            
 
 
 #if DEBUG

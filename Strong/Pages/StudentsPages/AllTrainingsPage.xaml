@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Strong.Pages.StudentsPages.AllTrainingsPage"
+             Title="AllTrainingsPage">
+
+    <ScrollView Orientation="Vertical">
+        <StackLayout Orientation="Vertical">
+
+            <CollectionView ItemsSource="{Binding TraininsList}" SelectionMode="Single"
+                            x:Name="ItemsCollectionView" SelectionChangedCommand="{Binding ClickCommand}"
+                            SelectionChangedCommandParameter="{ Binding SelectedItem.training_id, Source= {x:Reference ItemsCollectionView}}"
+                            >
+                <CollectionView.ItemTemplate >
+                    <DataTemplate >
+
+                        <StackLayout Orientation="Horizontal" Padding="5" HorizontalOptions="Center"> 
+                            <Label Text="{Binding training_name}"  FontSize="18" VerticalOptions="Center"  Margin="5" />
+                            <Label Text="{Binding training_start}" FontSize="18" VerticalOptions="Center"  Margin="5"/>
+                            <Label Text="{Binding training_end}" FontSize="18" VerticalOptions="Center"  Margin="5"/>
+                            <!--<Button Text="подробнее"
+                       Command="{Binding Path = BindingContext.AboutTrainingCommand, Source={x:Reference Name=This}}"
+                       CommandParameter="{Binding training_id}" />-->
+                            
+                        </StackLayout>
+
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </StackLayout>
+    </ScrollView>
+    
+</ContentPage>

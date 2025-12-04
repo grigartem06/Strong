@@ -252,7 +252,11 @@ namespace Strong.DataBase
 
         public async Task<List<SetsTable>> GetSetsByStudentId(int trId) => await _connection.Table<SetsTable>().Where(s=> s.training_id == trId).ToListAsync();
 
+        public async Task <List<TrainingTable>> GetAllTrainings(int stId)
+            => await _connection.Table<TrainingTable>().Where(s=> s.student_id == stId).ToListAsync();
 
+        public async Task<List<SetsTable>> GetSetsByTrainingId(int trainingID)
+            => await _connection.Table<SetsTable>().Where(s => s.training_id == trainingID).ToListAsync();
 
 
     }
