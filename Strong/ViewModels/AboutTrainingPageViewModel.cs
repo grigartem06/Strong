@@ -1,5 +1,6 @@
 ﻿
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Strong.DataBase;
 using Strong.Models;
 using System;
@@ -36,6 +37,13 @@ namespace Strong.ViewModels
             var sets =await  _database.GetSetsByTrainingId(trainingId);
             SetsList = new ObservableCollection<SetsTable>(sets);
 
+        }
+
+        [RelayCommand]
+        public async Task TextChanged()
+        {
+            await Application.Current.MainPage.DisplayAlertAsync("Ошибка", "Введите пароль", "ОК");
+            
         }
 
     }

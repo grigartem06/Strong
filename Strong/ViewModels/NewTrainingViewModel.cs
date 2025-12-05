@@ -11,8 +11,21 @@ namespace Strong.ViewModels
 {
     public partial class NewTrainingViewModel : ObservableObject
     {
+
+        // при загрузке
+        // получаем studentID 
+        // 1. создаётся тренировка 
+        // 2. сохраняется тренировка
+        // 3. получаем training_id только что созданной тренировки
+
+        // 4. создём запись setsTable c training_id
+        // 5. сохраняем 
+        // 6. обновляем вид
+        
+
         private readonly ToDoDataBase _database;
         private string _studentIdStr; // хранить строку, а не int
+        public TrainingTable x;
 
         [ObservableProperty] private TrainingTable trainingTable;
         [ObservableProperty] private SetsTable sets;
@@ -23,21 +36,15 @@ namespace Strong.ViewModels
 
         public NewTrainingViewModel()
         {
-            _database = new ToDoDataBase(); InitializeAsync(); 
+            _database = new ToDoDataBase();
+            InitializeAsync(); 
             // Не делаем ничего асинхронного в конструкторе!
         }
 
         public async Task InitializeAsync()
         {
-            try
-            {
+            
                 _studentIdStr = await SecureStorage.Default.GetAsync("studentID");
-
-                if (string.IsNullOrEmpty(_studentIdStr))
-                {
-                    throw new InvalidOperationException("Student ID not found in secure storage.");
-                }
-
                 int studentId = Convert.ToInt32(_studentIdStr);
 
                 trainingTable = new TrainingTable()
@@ -50,23 +57,27 @@ namespace Strong.ViewModels
                 };
 
                 // Добавляем тренировку и ждём завершения
-                await AddNewTraining();
+                 await AddNewTraining();
 
-                // Получаем только что созданную тренировку по её данным
-                nowtraining = await _database.GetNowTraining(trainingTable);
-                await SecureStorage.Default.SetAsync("trainingID",  nowtraining.training_id.ToString());
-            }
-            catch (Exception ex)
-            {
-                // Логируем или показываем пользователю
-                Console.WriteLine($"Ошибка инициализации: {ex.Message}");
-            }
+            //// Получаем только что созданную тренировку по её данным
+            //nowtraining = await _database.GetNowTraining(trainingTable);
+            //await SecureStorage.Default.SetAsync("trainingID", nowtraining.training_id.ToString());
+
+             //GetNowTraining();
+
             await Load();
         }
 
         public async Task AddNewTraining()
         {
-            await _database.AddTraining(trainingTable);
+             var x =  await _database.AddTraining(trainingTable);
+        }
+
+        public async Task GetNowTraining()
+        {
+            // Получаем только что созданную тренировку по её данным
+            nowtraining = await _database.GetNowTraining(trainingTable);
+            await SecureStorage.Default.SetAsync("trainingID", nowtraining.training_id.ToString());
         }
 
 
@@ -76,11 +87,11 @@ namespace Strong.ViewModels
         [RelayCommand]
         public async Task AddExerciseToTraining()
         {
-            if (nowtraining == null)
-            {
-                await Application.Current.MainPage.DisplayAlert("Ошибка", "Тренировка не создана.", "OK");
-                return;
-            }
+            //if (nowtraining == null)
+            //{
+            //    await Application.Current.MainPage.DisplayAlert("Ошибка", "Тренировка не создана.", "OK");
+            //    return;
+            //}
 
             var exercises = await _database.GetExercise(_studentIdStr); // передаём строку, а не int
 
@@ -106,7 +117,7 @@ namespace Strong.ViewModels
                 exercise_weight = 0,
                 exercise_reps = 0,
                 rest_time = 3,
-                training_id = nowtraining.training_id
+                training_id = x.training_id
             };
 
             await AddSets();
@@ -124,8 +135,11 @@ namespace Strong.ViewModels
 
         public async Task Load()
         {
-            GetNow();
-            var training = await _database.GetSetsByStudentId(nowtraining.training_id);
+            //nowtraining = await _database.GetNowTraining(trainingTable);
+            //await SecureStorage.Default.SetAsync("trainingID", nowtraining.training_id.ToString());
+
+            //await GetNow();
+            var training = await _database.GetSetsByStudentId(x.training_id);
             exerciseSections = new ObservableCollection<SetsTable>();
         }
     }

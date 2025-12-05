@@ -233,7 +233,11 @@ namespace Strong.DataBase
                 return await _connection.Table<MeasurementsTable>().Where(s => s.student_id == id).ToListAsync();
         }
 
-        public async Task AddTraining(TrainingTable training) => await _connection.InsertAsync(training);
+        public async Task<TrainingTable> AddTraining(TrainingTable training)
+        {
+            await _connection.InsertAsync(training); 
+            return training;
+        }
         
         
         
