@@ -4,7 +4,7 @@
              x:Class="Strong.Pages.StudentsPages.ExercisePage"
              Title="ExercisePage">
 
-
+    
     <StackLayout Orientation="Vertical" >
             
         <CollectionView ItemsSource="{Binding ExerciseList}" SelectedItem="{Binding Select}" >
@@ -16,6 +16,9 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+
+        <Button Text="добавить" Command="{Binding AddNewExersiceCommand} " Margin="5" />
+        <Button Text="назад" Command="{Binding BackCommand  }"/>
     </StackLayout>
 
 

@@ -17,14 +17,12 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
 
-                        <VerticalStackLayout>
+                        <StackLayout  Orientation="Horizontal"> 
                             <Label Text="{Binding exercise_id}" Margin="5"/>
                             <Label Text="{Binding exercise_weight}" Margin="5"/>
                             <Label Text="{Binding exercise_reps}" Margin="5"/>
                             <Label Text="{Binding rest_time}" Margin="5"/>
-                        </VerticalStackLayout>
-
-                           
+                        </StackLayout>
 
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
@@ -32,8 +30,8 @@
             </CollectionView>
 
             <Button Text="добавить упражнение" Command="{Binding AddExerciseToTrainingCommand}" Margin="5"/>
-            <Button Text="сохранить" Command="SaveTrainingCommand"/>
-            <Button Text="отменить" Command="CancelTrainingCommand"/>
+            <Button Text="сохранить" Command="{Binding SaveTrainingCommand} "/>
+            <Button Text="отменить" Command="{Binding CancelTrainingCommand}"/>
 
         </StackLayout>
     </ScrollView>

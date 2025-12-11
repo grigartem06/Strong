@@ -69,6 +69,9 @@ namespace Strong.ViewModels
             }
         }
 
+        [RelayCommand] 
+        public async Task Back () => Shell.Current.GoToAsync("//Pages/StudentsPages/StudentMainPage");
+
 
     }
 }

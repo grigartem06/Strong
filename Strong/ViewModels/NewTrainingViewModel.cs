@@ -11,6 +11,15 @@ namespace Strong.ViewModels
 {
     public partial class NewTrainingViewModel : ObservableObject
     {
+        public int stID;
+        public int id;
+        private readonly ToDoDataBase _database;
+        public TrainingTable nowtraining;
+        public TrainingTable now;
+
+        [ObservableProperty] public List<string> exerciseList;
+        [ObservableProperty] private SetsTable sets;
+        [ObservableProperty] private ObservableCollection<SetsTable> exerciseSections;
 
         // при загрузке
         // получаем studentID 
@@ -21,89 +30,49 @@ namespace Strong.ViewModels
         // 4. создём запись setsTable c training_id
         // 5. сохраняем 
         // 6. обновляем вид
-        
 
-        private readonly ToDoDataBase _database;
-        private string _studentIdStr; // хранить строку, а не int
-        public TrainingTable x;
-
-        [ObservableProperty] private TrainingTable trainingTable;
-        [ObservableProperty] private SetsTable sets;
-        [ObservableProperty] public List<string> exerciseList;
-        [ObservableProperty] public ObservableCollection<SetsTable> exerciseSections;
-
-        public TrainingTable nowtraining; // можно сделать ObservableProperty, если нужно обновлять UI
-
-        public NewTrainingViewModel()
+        public NewTrainingViewModel() 
         {
             _database = new ToDoDataBase();
-            InitializeAsync(); 
-            // Не делаем ничего асинхронного в конструкторе!
-        }
 
-        public async Task InitializeAsync()
-        {
+             GetSecret();
+            //GetInf();
             
-                _studentIdStr = await SecureStorage.Default.GetAsync("studentID");
-                int studentId = Convert.ToInt32(_studentIdStr);
 
-                trainingTable = new TrainingTable()
-                {
-                    training_name = "Name",
-                    training_start = DateTime.Now,
-                    student_id = studentId,
-                    training_end = DateTime.Now,
-                    IsPattern = false
-                };
-
-                // Добавляем тренировку и ждём завершения
-                 await AddNewTraining();
-
-            //// Получаем только что созданную тренировку по её данным
-            //nowtraining = await _database.GetNowTraining(trainingTable);
-            //await SecureStorage.Default.SetAsync("trainingID", nowtraining.training_id.ToString());
-
-             //GetNowTraining();
-
-            await Load();
         }
 
-        public async Task AddNewTraining()
+        public async Task GetSecret()
         {
-             var x =  await _database.AddTraining(trainingTable);
+            stID = Convert.ToInt32(await SecureStorage.Default.GetAsync("studentID"));
+            nowtraining = new TrainingTable()
+            {
+                student_id = stID,
+                training_name = "name",
+                training_start = DateTime.Now,
+                training_end = DateTime.Now,
+                IsPattern = false
+            };
+            //_database.AddTraining(nowtraining);
+
+
+            var addedTraining = await _database.AddTraining(nowtraining);
+            now = addedTraining;
+            id = addedTraining.training_id;
         }
 
-        public async Task GetNowTraining()
+        public async Task GetInf()
         {
-            // Получаем только что созданную тренировку по её данным
-            nowtraining = await _database.GetNowTraining(trainingTable);
-            await SecureStorage.Default.SetAsync("trainingID", nowtraining.training_id.ToString());
+            now = await _database.GetNowTraining(nowtraining);
+            int id = now.training_id;
         }
-
-
-
-        public async Task AddSets() => await _database.AddSets(sets);
 
         [RelayCommand]
         public async Task AddExerciseToTraining()
         {
-            //if (nowtraining == null)
-            //{
-            //    await Application.Current.MainPage.DisplayAlert("Ошибка", "Тренировка не создана.", "OK");
-            //    return;
-            //}
+            var exercises = await _database.GetExercise(stID.ToString()); 
+            exerciseList = exercises.Select(e => e.exercise_name).ToList();
 
-            var exercises = await _database.GetExercise(_studentIdStr); // передаём строку, а не int
-
-            if (exercises == null || !exercises.Any())
-            {
-                await Application.Current.MainPage.DisplayAlert("Ошибка", "Нет упражнений для выбора.", "OK");
-                return;
-            }
-
-            ExerciseList = exercises.Select(e => e.exercise_name).ToList();
-
-            string selectedName = await Application.Current.MainPage.DisplayActionSheet("Выберите упражнение", "Отмена", null, ExerciseList.ToArray());
+            string selectedName = await Application.Current.MainPage.DisplayActionSheet("Выберите упражнение", "Отмена", null, exerciseList.ToArray());
 
             if (string.IsNullOrEmpty(selectedName)) return;
 
@@ -117,30 +86,32 @@ namespace Strong.ViewModels
                 exercise_weight = 0,
                 exercise_reps = 0,
                 rest_time = 3,
-                training_id = x.training_id
+                training_id = id
             };
 
-            await AddSets();
-            await Load();
+            await _database.AddSets(sets);
+
+            var e = await _database.GetSetsByTrainingId(id);
+            ExerciseSections = new ObservableCollection<SetsTable>(e);
         }
 
-        // Если нужно перезагрузить текущую тренировку
-        public async Task GetNow()
+        [RelayCommand]
+        public async Task SaveTraining() { await Shell.Current.GoToAsync("//Pages/StudentsPages/StudentMainPage"); ExerciseSections.Clear(); }
+
+        [RelayCommand]
+        public async Task CancelTraining ()
         {
-            if (trainingTable != null)
-            {
-                nowtraining = await _database.GetNowTraining(trainingTable);
-            }
+             _database.DellTraining(id);
+            
+            if(ExerciseSections!= null) 
+                ExerciseSections.Clear();
+            
+            Shell.Current.GoToAsync("//Pages/StudentsPages/StudentMainPage");
+
         }
 
-        public async Task Load()
-        {
-            //nowtraining = await _database.GetNowTraining(trainingTable);
-            //await SecureStorage.Default.SetAsync("trainingID", nowtraining.training_id.ToString());
 
-            //await GetNow();
-            var training = await _database.GetSetsByStudentId(x.training_id);
-            exerciseSections = new ObservableCollection<SetsTable>();
-        }
+
+
     }
 }

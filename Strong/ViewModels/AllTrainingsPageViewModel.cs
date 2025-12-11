@@ -44,6 +44,9 @@ namespace Strong.ViewModels
             await Shell.Current.GoToAsync("//Pages/StudentsPages/AboutTrainingPage");
         }
 
+        [RelayCommand]
+        public async Task Back() => Shell.Current.GoToAsync("//Pages/StudentsPages/StudentMainPage");
+
 
 
     }

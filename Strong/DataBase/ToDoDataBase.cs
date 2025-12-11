@@ -243,11 +243,11 @@ namespace Strong.DataBase
         
         public async Task<TrainingTable> GetNowTraining(TrainingTable training)
         {
-            //return  await _connection.Table<TrainingTable>().Where(t => t.training_name == training.training_name 
-            //    && t.training_start == training.training_start 
-            //    && t.student_id == training.student_id).ToListAsync();
-
-            return await _connection.Table<TrainingTable>().FirstOrDefaultAsync(t => t.training_name == training.training_name && t.IsPattern == training.IsPattern && t.training_start == training.training_start && t.student_id == training.student_id);
+            return await _connection.Table<TrainingTable>().
+                FirstOrDefaultAsync(t => t.training_name == training.training_name 
+                && t.IsPattern == training.IsPattern 
+                && t.training_start == training.training_start 
+                && t.student_id == training.student_id);
             
         }
 
@@ -261,6 +261,29 @@ namespace Strong.DataBase
 
         public async Task<List<SetsTable>> GetSetsByTrainingId(int trainingID)
             => await _connection.Table<SetsTable>().Where(s => s.training_id == trainingID).ToListAsync();
+
+
+
+        public async Task<List<MuscleGroupTable>> GetMuscleGroup () => await _connection.Table<MuscleGroupTable>().ToListAsync();
+
+        public async Task<List<CategoryTable>> GetCategory() => await _connection.Table<CategoryTable>().ToListAsync();
+
+        public async Task DellTraining(int trId)
+        {
+            var setsDel = await _connection.Table<SetsTable>().Where(s => s.training_id == trId).ToListAsync();
+
+            foreach (var set in setsDel)
+            {
+                await _connection.DeleteAsync(set);
+            }
+
+            var trDel = await _connection.Table<TrainingTable>().Where(t => t.training_id == trId).ToListAsync();
+
+            foreach (var training in trDel)
+            {
+                await _connection.DeleteAsync(training);
+            }
+        }
 
 
     }

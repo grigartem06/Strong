@@ -17,6 +17,9 @@ namespace Strong.ViewModels
 
         [ObservableProperty] public ObservableCollection<SetsTable> setsList;
 
+        [ObservableProperty]
+        private ObservableCollection<Grouping<string, SetsTable>> _groupedSets;
+
 
 
         public AboutTrainingPageViewModel()
@@ -35,15 +38,32 @@ namespace Strong.ViewModels
         {
             await  GetSecret();
             var sets =await  _database.GetSetsByTrainingId(trainingId);
-            SetsList = new ObservableCollection<SetsTable>(sets);
 
+            // Группируем по exercise_id (или другому полю)
+            var grouped = sets
+                .GroupBy(s => s.exercise_id.ToString()) // или название упражнения
+                .Select(g => new Grouping<string, SetsTable>(g.Key, g))
+                .ToList();
+
+            GroupedSets = new ObservableCollection<Grouping<string, SetsTable>>(grouped);
+        }
+
+        public class Grouping<TKey, TElement> : ObservableCollection<TElement>
+        {
+            public TKey Key { get; private set; }
+
+            public Grouping(TKey key, IEnumerable<TElement> items)
+            {
+                Key = key;
+                foreach (var item in items)
+                    this.Add(item);
+            }
         }
 
         [RelayCommand]
         public async Task TextChanged()
         {
             await Application.Current.MainPage.DisplayAlertAsync("Ошибка", "Введите пароль", "ОК");
-            
         }
 
     }

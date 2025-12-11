@@ -28,6 +28,8 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
+            <Button Text="назад" Command="{Binding BackCommand  }"/>
+
         </StackLayout>
     </ScrollView>
     
