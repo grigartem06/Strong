@@ -18,7 +18,7 @@ namespace Strong.ViewModels
         [ObservableProperty] public ObservableCollection<SetsTable> setsList;
 
         [ObservableProperty]
-        private ObservableCollection<Grouping<string, SetsTable>> _groupedSets;
+        private ObservableCollection<Grouping<string, SetsTable>> groupedSets;
 
 
 
