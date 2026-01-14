@@ -18,10 +18,10 @@
                     <DataTemplate>
 
                         <StackLayout  Orientation="Horizontal"> 
-                            <Label Text="{Binding exercise_id}" Margin="5"/>
-                            <Label Text="{Binding exercise_weight}" Margin="5"/>
-                            <Label Text="{Binding exercise_reps}" Margin="5"/>
-                            <Label Text="{Binding rest_time}" Margin="5"/>
+                            <Label Text="{Binding exercise_id, Mode=TwoWay}" Margin="5"/>
+                            <Entry Text="{Binding exercise_weight, Mode=TwoWay}" Margin="5"/>
+                            <Entry Text="{Binding exercise_reps, Mode=TwoWay}" Margin="5"/>
+                            <Entry Text="{Binding rest_time, Mode=TwoWay}" Margin="5"/>
                         </StackLayout>
 
                     </DataTemplate>

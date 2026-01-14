@@ -10,18 +10,19 @@
             <Label Text="замеры:" Margin="5" FontSize="Header"/>
 
             <Picker ItemsSource="{Binding Measurements}" ItemDisplayBinding="{Binding .}" SelectedItem="{Binding SelectedType}" Title="выберите тип" SelectedIndexChanged="{Binding OnPickerSelectedIndexChanged}" />
-            <Entry Text="{Binding Value}"  Placeholder="введите значение"  Keyboard="Numeric"/>
+            <Entry Text="{Binding Value}"  Placeholder="введите значение"  Keyboard="Numeric" />
             <Button Text="сохранить" Command="{Binding SaveCommand}"/>
 
             <Label Text="история:" HorizontalOptions="Center"/>
 
-            <CollectionView ItemsSource="{Binding MeasurementsList}" SelectionMode="Single">
+            <CollectionView ItemsSource="{Binding MeasurementsList}" SelectionMode="Single" HorizontalOptions="Center" >
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Orientation="Horizontal" Padding="5">
                             <Label Text="{Binding measurements_name}" Margin="3"/>
                             <Label Text="{Binding measurements_value}" Margin="3"/>
                             <Label Text="{Binding measurements_date}" Margin="3"/>
+                            <Button Text="удалить" Command="{Binding DeleteCommand}" Margin="5" BackgroundColor="Red"  TextColor="White"/>
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

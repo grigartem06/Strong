@@ -8,4 +8,15 @@ public partial class AboutTrainingPage : ContentPage
 	{
 		InitializeComponent(); BindingContext = vm;
 	}
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        if (BindingContext is AboutTrainingPageViewModel vm)
+        {
+            await vm.InitializeAsync(); // Вызываем инициализацию при отображении страницы
+        }
+    }
+
+
 }

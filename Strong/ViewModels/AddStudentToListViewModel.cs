@@ -2,13 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Strong.DataBase;
 using Strong.Models;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using static Strong.DataBase.ToDoDataBase;
 
 namespace Strong.ViewModels

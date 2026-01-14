@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Strong.Pages.StudentsPages.AboutTrainingPage"
@@ -7,29 +6,23 @@
     <ScrollView>
         <StackLayout Orientation="Vertical">
 
-            <CollectionView ItemsSource="{Binding GroupedSets}" SelectionMode="Single" IsGrouped="True">
-                <CollectionView.GroupHeaderTemplate>
-                    <DataTemplate>
-                        <Label Text="{Binding Key}"  Margin="5" HorizontalTextAlignment="Center"/>
-                    </DataTemplate>
-                </CollectionView.GroupHeaderTemplate>
-                
+
+            <CollectionView ItemsSource="{Binding SetsList}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <StackLayout Orientation="Horizontal" Padding="5" HorizontalOptions="Center">
-                            <!--<Label Text="{Binding exercise_id}"  FontSize="18" VerticalOptions="Center"  Margin="5" />-->
-                            <Entry Text="{Binding exercise_weight}" FontSize="18" VerticalOptions="Center"  Margin="5" />
-                            <Entry Text="{Binding exercise_reps}" FontSize="18" VerticalOptions="Center"  Margin="5" />
-                            <Entry Text="{Binding rest_time}" FontSize="18" VerticalOptions="Center"  Margin="5"  />
-                            <Button Text="Save"  Command="{Binding SaveChancedCommand}" Margin="5" IsVisible="Collapse" x:Name="SaveBtn"/>
-                        </StackLayout>
+                        <StackLayout Orientation="Vertical">
+                            <Label Text="{Binding exercise_id}" VerticalTextAlignment="Center" Margin="5"/>
 
+                            <StackLayout Orientation="Horizontal">
+                                <Entry Text="{Binding exercise_weight , Mode=TwoWay}" Margin="5"/>
+                                <Entry Text="{Binding exercise_reps  , Mode=TwoWay}" Margin="5"/>
+                                <Entry Text="{Binding rest_time , Mode=TwoWay}" Margin="5"/>
+                            </StackLayout>
+
+                        </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-
-
         </StackLayout>
     </ScrollView>
-    
 </ContentPage>

@@ -16,6 +16,7 @@ namespace Strong.ViewModels
         [ObservableProperty] public double value;
         [ObservableProperty] public string selectedType;
         [ObservableProperty] public ObservableCollection<MeasurementsTable> measurementsList;
+       
 
         
 
@@ -26,21 +27,23 @@ namespace Strong.ViewModels
         public  MeasurementsViewModel()
         {
             _database = new ToDoDataBase();
-            measurements = new List<string>() {"замер1","замер2","замер3" };
+            measurements = new List<string>() {"все", "замер1","замер2","замер3" };
             GetSecret();
             Load();
-
-            
-
-
         }
+        
         [RelayCommand]
         public async Task Load()
         {
-            
-        await  GetSecret();
+            await  GetSecret();
             int x = stId;
+            if(SelectedType == "все") 
+            {
+                SelectedType = null;
+            }
+
             var measurements = await _database.GetMeasurements(SelectedType, stId);
+
             MeasurementsList = new ObservableCollection<MeasurementsTable>(measurements);
         }
 
@@ -54,23 +57,44 @@ namespace Strong.ViewModels
         [RelayCommand]
         public async Task Save()
         {
-            GetSecret();
-            string name = selectedType;
-            double saveValue = value;
-            await _database.SaveMeasurement(selectedType, value , stId);
+            bool check = true;
+            if (SelectedType == null)
+            {
+                await Application.Current.MainPage.DisplayAlertAsync("Ошибка", "Выберите тип замера", "ОК");
+                check = false;
+            }
+
+            if (value == 0)
+            {
+                check = false;
+                await Application.Current.MainPage.DisplayAlertAsync("Ошибка", "Введите значение", "ОК");
+            }
+
+            if(check)
+            {
+                GetSecret();
+                string name = selectedType;
+                double saveValue = value;
+                await _database.SaveMeasurement(selectedType, value, stId);
+                Load();
+            }
         }
 
 
         partial  void OnSelectedTypeChanged(string value)
         {
             if (!string.IsNullOrEmpty(value))
-            {
                 Load();
-            }
         }
 
         [RelayCommand] 
         public async Task Back () => Shell.Current.GoToAsync("//Pages/StudentsPages/StudentMainPage");
+
+        [RelayCommand]
+        public async Task Delete()
+        {
+
+        }
 
 
     }

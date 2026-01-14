@@ -1,70 +1,80 @@
-﻿
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input; // Для IAsyncRelayCommand, если нужно
 using Strong.DataBase;
 using Strong.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
+using System.Threading.Tasks; // Добавить
 
 namespace Strong.ViewModels
 {
     public partial class AboutTrainingPageViewModel : ObservableObject
     {
         private readonly ToDoDataBase _database;
-        public int trainingId;
-
-        [ObservableProperty] public ObservableCollection<SetsTable> setsList;
+        private int trainingId;
 
         [ObservableProperty]
-        private ObservableCollection<Grouping<string, SetsTable>> groupedSets;
+        private ObservableCollection<SetsTable> setsList = new(); // Инициализировать сразу
 
-
-
-        public AboutTrainingPageViewModel()
+        public AboutTrainingPageViewModel() // Конструктор остаётся синхронным
         {
             _database = new ToDoDataBase();
-            GetSecret();
-            LoadSets();
+            // Убираем LoadSets из конструктора
+        }
+
+        // Метод для инициализации, вызываемый извне
+        public async Task InitializeAsync()
+        {
+            await GetSecret();
+            await LoadSetsAsync(); // Вызываем асинхронно
         }
 
         public async Task GetSecret()
         {
-            trainingId = Convert.ToInt32(await SecureStorage.Default.GetAsync("TrainingID"));
-        }
-
-        public async Task LoadSets() 
-        {
-            await  GetSecret();
-            var sets =await  _database.GetSetsByTrainingId(trainingId);
-
-            // Группируем по exercise_id (или другому полю)
-            var grouped = sets
-                .GroupBy(s => s.exercise_id.ToString()) // или название упражнения
-                .Select(g => new Grouping<string, SetsTable>(g.Key, g))
-                .ToList();
-
-            GroupedSets = new ObservableCollection<Grouping<string, SetsTable>>(grouped);
-        }
-
-        public class Grouping<TKey, TElement> : ObservableCollection<TElement>
-        {
-            public TKey Key { get; private set; }
-
-            public Grouping(TKey key, IEnumerable<TElement> items)
+            var trainingIdStr = await SecureStorage.Default.GetAsync("TrainingID");
+            if (!string.IsNullOrEmpty(trainingIdStr) && int.TryParse(trainingIdStr, out int id))
             {
-                Key = key;
-                foreach (var item in items)
-                    this.Add(item);
+                trainingId = id;
+            }
+            else
+            {
+                //trainingId = -1; // Или другое значение по умолчанию
             }
         }
 
-        [RelayCommand]
-        public async Task TextChanged()
+        [RelayCommand] // Команда может быть асинхронной
+        public async Task LoadSetsAsync() // Сделаем метод асинхронным
         {
-            await Application.Current.MainPage.DisplayAlertAsync("Ошибка", "Введите пароль", "ОК");
+            if (trainingId == 0) // Проверяем, был ли уже получен ID
+            {
+                await GetSecret();
+            }
+            if (trainingId == -1) return; // Не грузим, если ID не валидный
+
+            var sets = await _database.GetSetsByTrainingId(trainingId);
+            SetsList.Clear(); // Очищаем старые данные
+            foreach (var set in sets)
+            {
+                set.ValueChanged += OnSetValueChanged;
+
+                SetsList.Add(set); // Добавляем в существующую ObservableCollection
+            }
         }
+
+        private async void OnSetValueChanged(SetsTable changedSet)
+        {
+            try
+            {
+                _database.UpdateAsync(changedSet);
+            }
+            catch (Exception ex)
+            {
+                //Console.WriteLine($"Ошибка при сохранении сета {changedSet.sets_id}: {ex.Message}");
+                // Можно добавить уведомление пользователю
+            }
+        }
+
 
     }
 }

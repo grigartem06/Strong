@@ -34,11 +34,7 @@ namespace Strong.ViewModels
         public NewTrainingViewModel() 
         {
             _database = new ToDoDataBase();
-
              GetSecret();
-            //GetInf();
-            
-
         }
 
         public async Task GetSecret()
@@ -52,12 +48,10 @@ namespace Strong.ViewModels
                 training_end = DateTime.Now,
                 IsPattern = false
             };
-            //_database.AddTraining(nowtraining);
-
 
             var addedTraining = await _database.AddTraining(nowtraining);
             now = addedTraining;
-            id = addedTraining.training_id;
+            id = now.training_id;
         }
 
         public async Task GetInf()
@@ -93,10 +87,21 @@ namespace Strong.ViewModels
 
             var e = await _database.GetSetsByTrainingId(id);
             ExerciseSections = new ObservableCollection<SetsTable>(e);
+
+
+            InitializeAsync();
         }
 
         [RelayCommand]
-        public async Task SaveTraining() { await Shell.Current.GoToAsync("//Pages/StudentsPages/StudentMainPage"); ExerciseSections.Clear(); }
+        public async Task SaveTraining()
+        { 
+            
+            if (ExerciseSections == null) 
+            {
+                CancelTraining();
+            } 
+            else { await Shell.Current.GoToAsync("//Pages/StudentsPages/StudentMainPage"); }
+        }
 
         [RelayCommand]
         public async Task CancelTraining ()
@@ -111,7 +116,32 @@ namespace Strong.ViewModels
         }
 
 
+        //моментальное изменение значений
+        public async Task InitializeAsync()
+        {
+            await LoadSetsAsync();
+        }
 
+        [RelayCommand]
+        public async Task LoadSetsAsync()
+        {
+            var sets = await _database.GetSetsByTrainingId(id);
+            ExerciseSections.Clear();
+            foreach (var set in sets) 
+            {
+                set.ValueChanged += OnSetValueChanged;
+                ExerciseSections.Add(set);
+            }
+        }
+
+        private async void OnSetValueChanged(SetsTable changedSet)
+        {
+            try
+            {
+                _database.UpdateAsync(changedSet);
+            }
+            catch (Exception ex) { }
+        }
 
     }
 }
